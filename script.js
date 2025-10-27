@@ -1,46 +1,42 @@
-const webhookUrl = "https://n8n.srv1023211.hstgr.cloud/webhook/840b46c5-e624-4b00-8fb8-90f2e4912414/chat";
-
 const chatToggle = document.getElementById("chat-toggle");
 const chatWindow = document.getElementById("chat-window");
+const chatClose = document.getElementById("chat-close");
 const sendBtn = document.getElementById("send-btn");
-const userInput = document.getElementById("user-input");
+const chatInput = document.getElementById("chat-input");
 const chatMessages = document.getElementById("chat-messages");
 
-// Toggle window
 chatToggle.addEventListener("click", () => {
-  chatWindow.classList.toggle("hidden");
+  chatWindow.style.display = "flex";
+  chatToggle.style.display = "none";
 });
 
-// Send message
+chatClose.addEventListener("click", () => {
+  chatWindow.style.display = "none";
+  chatToggle.style.display = "flex";
+});
+
 sendBtn.addEventListener("click", sendMessage);
-userInput.addEventListener("keypress", (e) => {
+chatInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-async function sendMessage() {
-  const message = userInput.value.trim();
+function sendMessage() {
+  const message = chatInput.value.trim();
   if (!message) return;
 
-  addMessage(message, "user");
-  userInput.value = "";
+  // Add user message
+  const userMsg = document.createElement("div");
+  userMsg.classList.add("user-msg");
+  userMsg.textContent = message;
+  chatMessages.appendChild(userMsg);
 
-  try {
-    const res = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
-    const data = await res.json();
-    addMessage(data.response || "No response received.", "bot");
-  } catch (err) {
-    addMessage("Error contacting the chapel assistant.", "bot");
-  }
-}
+  chatInput.value = "";
 
-function addMessage(text, type) {
-  const msg = document.createElement("div");
-  msg.className = `message ${type}`;
-  msg.textContent = text;
-  chatMessages.appendChild(msg);
+  // Simulated bot reply (replace with webhook call later)
+  const botMsg = document.createElement("div");
+  botMsg.classList.add("bot-msg");
+  botMsg.textContent = "Thank you for your question. I’ll respond shortly.";
+  chatMessages.appendChild(botMsg);
+
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
