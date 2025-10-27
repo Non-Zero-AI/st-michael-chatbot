@@ -3,13 +3,13 @@
   --color-navy: #1a1a5a;
   --color-cream: #fdfaf4;
   --color-white: #ffffff;
-  --color-shadow: rgba(0, 0, 0, 0.15);
-  --font-primary: "Georgia", serif;
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --font: "Georgia", serif;
 }
 
 body {
   background: var(--color-cream);
-  font-family: var(--font-primary);
+  font-family: var(--font);
 }
 
 /* Toggle Button */
@@ -17,113 +17,108 @@ body {
   position: fixed;
   bottom: 25px;
   right: 25px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  background: var(--color-gold);
-  box-shadow: 0 6px 14px var(--color-shadow);
+  width: 70px;
+  height: 70px;
+  background-color: var(--color-gold);
   border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px var(--color-shadow);
   cursor: pointer;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-#chat-toggle:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 18px var(--color-shadow);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  z-index: 9999;
 }
 
 #chat-toggle img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
 }
 
+#chat-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px var(--color-shadow);
+}
+
 /* Chat Window */
-#chat-window {
+#chat-container {
   position: fixed;
-  bottom: 100px;
+  bottom: 110px;
   right: 25px;
-  width: 400px;
-  height: 550px;
-  background: var(--color-cream);
+  width: 380px;
+  height: 500px;
+  background-color: var(--color-cream);
   border: 2px solid var(--color-gold);
   border-radius: 12px;
-  box-shadow: 0 4px 20px var(--color-shadow);
+  box-shadow: 0 4px 18px var(--color-shadow);
   display: none;
   flex-direction: column;
   overflow: hidden;
-  z-index: 9999;
-  animation: slideUp 0.4s ease;
+  z-index: 10000;
+  animation: fadeIn 0.4s ease;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Header */
 .chat-header {
   background: var(--color-navy);
   color: var(--color-white);
-  text-align: center;
-  padding: 0.8em;
+  padding: 0.75em 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: bold;
   letter-spacing: 0.5px;
-  font-size: 1.1em;
-  position: relative;
 }
 
-#chat-close {
-  position: absolute;
-  right: 10px;
-  top: 8px;
+.close-btn {
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1.3em;
 }
 
-/* Message Area */
-.chat-messages {
+/* Body */
+.chat-body {
   flex: 1;
   padding: 1em;
   overflow-y: auto;
+  background: var(--color-cream);
 }
 
-.user-msg {
-  text-align: right;
-  background: var(--color-navy);
-  color: var(--color-white);
-  padding: 8px 12px;
-  margin: 5px 0;
-  border-radius: 10px 10px 0 10px;
-  display: inline-block;
+.bot-msg, .user-msg {
+  margin: 8px 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  max-width: 85%;
 }
 
 .bot-msg {
-  text-align: left;
   background: var(--color-white);
   color: var(--color-navy);
-  padding: 8px 12px;
-  margin: 5px 0;
-  border-radius: 10px 10px 10px 0;
-  display: inline-block;
+  align-self: flex-start;
+  box-shadow: 0 2px 4px var(--color-shadow);
 }
 
-/* Input */
+.user-msg {
+  background: var(--color-navy);
+  color: var(--color-white);
+  align-self: flex-end;
+}
+
+/* Input Area */
 .chat-input {
   display: flex;
   border-top: 1px solid var(--color-gold);
+  background: var(--color-white);
 }
 
 .chat-input input {
   flex: 1;
   border: none;
-  padding: 0.8em;
-  font-size: 0.95em;
-  background: var(--color-white);
+  padding: 0.75em;
+  font-size: 1em;
 }
 
 .chat-input button {
@@ -132,6 +127,7 @@ body {
   border: none;
   padding: 0 1.5em;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .chat-input button:hover {
@@ -141,10 +137,10 @@ body {
 
 /* Responsive */
 @media (max-width: 600px) {
-  #chat-window {
-    width: 90vw;
-    height: 70vh;
-    right: 5vw;
+  #chat-container {
+    width: 90%;
+    right: 5%;
     bottom: 90px;
+    height: 70%;
   }
 }
