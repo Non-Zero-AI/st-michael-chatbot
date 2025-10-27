@@ -3,24 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>St. Michael the Archangel Chat</title>
+  <title>St. Michael Chatbot</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="chat-toggle">
+
+  <!-- Chat Toggle Button -->
+  <button id="chat-toggle">
     <img src="https://i.ibb.co/vCY98r8r/Benedictine-Cross-1.png" alt="Chat Icon" />
-  </div>
+  </button>
 
-  <div id="chat-window" class="hidden">
+  <!-- Chat Window -->
+  <div id="chat-window">
     <div class="chat-header">
-      <h2>St. Michael the Archangel Chapel</h2>
-      <p class="subtitle">Ask about Mass times or the Catholic Faith</p>
+      St. Michael Faith Assistant  
+      <span id="chat-close">✕</span>
     </div>
-
-    <div id="chat-messages"></div>
-
+    <div class="chat-messages" id="chat-messages">
+      <p><em>Ask about Mass times, sacraments, or the Catholic Faith.</em></p>
+    </div>
     <div class="chat-input">
-      <input id="user-input" type="text" placeholder="Type your message..." />
+      <input type="text" id="chat-input" placeholder="Type your message..." />
       <button id="send-btn">Send</button>
     </div>
   </div>
