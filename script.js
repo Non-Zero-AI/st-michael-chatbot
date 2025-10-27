@@ -1,42 +1,51 @@
 const chatToggle = document.getElementById("chat-toggle");
-const chatWindow = document.getElementById("chat-window");
+const chatContainer = document.getElementById("chat-container");
 const chatClose = document.getElementById("chat-close");
 const sendBtn = document.getElementById("send-btn");
-const chatInput = document.getElementById("chat-input");
-const chatMessages = document.getElementById("chat-messages");
+const userInput = document.getElementById("user-input");
+const chatBody = document.getElementById("chat-body");
 
 chatToggle.addEventListener("click", () => {
-  chatWindow.style.display = "flex";
+  chatContainer.style.display = "flex";
   chatToggle.style.display = "none";
 });
 
 chatClose.addEventListener("click", () => {
-  chatWindow.style.display = "none";
-  chatToggle.style.display = "flex";
+  chatContainer.style.display = "none";
+  chatToggle.style.display = "block";
 });
 
 sendBtn.addEventListener("click", sendMessage);
-chatInput.addEventListener("keypress", (e) => {
+userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
 function sendMessage() {
-  const message = chatInput.value.trim();
+  const message = userInput.value.trim();
   if (!message) return;
 
-  // Add user message
-  const userMsg = document.createElement("div");
-  userMsg.classList.add("user-msg");
-  userMsg.textContent = message;
-  chatMessages.appendChild(userMsg);
+  appendMessage(message, "user");
+  userInput.value = "";
 
-  chatInput.value = "";
+  // Replace with your actual webhook URL
+  const webhookUrl = "https://n8n.srv1023211.hstgr.cloud/webhook/840b46c5-e624-4b00-8fb8-90f2e4912414/chat";
 
-  // Simulated bot reply (replace with webhook call later)
-  const botMsg = document.createElement("div");
-  botMsg.classList.add("bot-msg");
-  botMsg.textContent = "Thank you for your question. I’ll respond shortly.";
-  chatMessages.appendChild(botMsg);
+  fetch(webhookUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      appendMessage(data.reply || "Thank you for reaching out.", "bot");
+    })
+    .catch(() => appendMessage("Sorry, I could not connect to the assistant.", "bot"));
+}
 
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+function appendMessage(text, type) {
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add(type === "user" ? "user-msg" : "bot-msg");
+  msgDiv.textContent = text;
+  chatBody.appendChild(msgDiv);
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
