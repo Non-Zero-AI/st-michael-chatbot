@@ -28,7 +28,7 @@ function sendMessage() {
   userInput.value = "";
 
   // Replace with your actual webhook URL
-  const webhookUrl = "https://n8n.srv1023211.hstgr.cloud/webhook/840b46c5-e624-4b00-8fb8-90f2e4912414/chat";
+  const webhookUrl = "https://n8n.srv1023211.hstgr.cloud/webhook/st-michael-chatbot";
 
   fetch(webhookUrl, {
     method: "POST",
