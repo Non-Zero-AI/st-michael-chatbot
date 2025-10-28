@@ -5,6 +5,7 @@ const sendBtn = document.getElementById("send-btn");
 const userInput = document.getElementById("user-input");
 const chatBody = document.getElementById("chat-body");
 
+// Open/close behavior
 chatToggle.addEventListener("click", () => {
   chatContainer.style.display = "flex";
   chatToggle.style.display = "none";
@@ -15,31 +16,37 @@ chatClose.addEventListener("click", () => {
   chatToggle.style.display = "block";
 });
 
+// Send message
 sendBtn.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-function sendMessage() {
+async function sendMessage() {
   const message = userInput.value.trim();
   if (!message) return;
 
   appendMessage(message, "user");
   userInput.value = "";
 
-  // Replace with your actual webhook URL
   const webhookUrl = "https://n8n.srv1023211.hstgr.cloud/webhook/st-michael-chatbot";
 
-  fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      appendMessage(data.reply || "Thank you for reaching out.", "bot");
-    })
-    .catch(() => appendMessage("Sorry, I could not connect to the assistant.", "bot"));
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
+
+    const data = await response.json();
+
+    // Only display a bot message if one exists
+    if (data && (data.reply || data.answer)) {
+      appendMessage(data.reply || data.answer, "bot");
+    }
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
 }
 
 function appendMessage(text, type) {
